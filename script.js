@@ -146,24 +146,47 @@ class StarsGenerator {
 
 // ==================== SCRIPT ANIMATOR ====================
 class ScriptAnimator {
-  constructor(scriptData) {
+  constructor(scriptData, onComplete) {
     this.scriptText = document.getElementById("script-text");
     this.scripts = scriptData.script;
     this.currentIndex = 0;
+    this.intervalId = null;
+    this.onComplete = onComplete;
   }
 
   start() {
     this.updateScript();
-    setInterval(() => this.updateScript(), CONFIG.TOTAL_DURATION * 1000);
+    this.intervalId = setInterval(() => this.updateScript(), CONFIG.TOTAL_DURATION * 1000);
   }
 
   updateScript() {
+    // Check if we've reached the last sentence
+    if (this.currentIndex >= this.scripts.length - 1) {
+      // Display the last sentence and stop
+      this.scriptText.style.animation = "none";
+      this.scriptText.offsetHeight; // Trigger reflow
+      this.scriptText.textContent = this.scripts[this.currentIndex];
+      this.scriptText.style.opacity = "1"; // Keep it visible
+      
+      // Stop the interval
+      if (this.intervalId) {
+        clearInterval(this.intervalId);
+        this.intervalId = null;
+      }
+      
+      // Notify that we've completed
+      if (this.onComplete) {
+        this.onComplete();
+      }
+      return;
+    }
+    
     this.scriptText.style.animation = "none";
     this.scriptText.offsetHeight; // Trigger reflow
     this.scriptText.textContent = this.scripts[this.currentIndex];
     this.scriptText.style.animation = `fadeInOut ${CONFIG.TOTAL_DURATION}s`;
     
-    this.currentIndex = (this.currentIndex + 1) % this.scripts.length;
+    this.currentIndex++;
   }
 }
 
@@ -362,6 +385,8 @@ class FireworksManager {
       "#ff00ff", "#00ffff", "#ffa500", "#ff69b4",
     ];
     this.types = ["regular", "regular", "regular", "2026", "horse"];
+    this.isActive = true;
+    this.launchIntervalId = null;
     
     this.resizeCanvas();
     window.addEventListener("resize", () => this.resizeCanvas());
@@ -373,6 +398,8 @@ class FireworksManager {
   }
 
   launchFirework() {
+    if (!this.isActive) return;
+    
     const x = Math.random() * this.canvas.width;
     const y = Math.random() * (this.canvas.height * 0.4) + this.canvas.height * 0.1;
     const color = this.colors[Math.floor(Math.random() * this.colors.length)];
@@ -397,7 +424,15 @@ class FireworksManager {
 
   start() {
     this.animate();
-    setInterval(() => this.launchFirework(), CONFIG.FIREWORK_INTERVAL);
+    this.launchIntervalId = setInterval(() => this.launchFirework(), CONFIG.FIREWORK_INTERVAL);
+  }
+
+  stop() {
+    this.isActive = false;
+    if (this.launchIntervalId) {
+      clearInterval(this.launchIntervalId);
+      this.launchIntervalId = null;
+    }
   }
 }
 
