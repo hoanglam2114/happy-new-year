@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy New Year 2026</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Welcome Page -->
+    <div id="welcome-page">
+      <div id="welcome-quote">
+        "Hãy buông bỏ những gì đã qua, và đón nhận những điều tốt đẹp sắp đến.
+        Năm mới, khởi đầu mới!"
+      </div>
+      <button id="start-button">Bắt đầu</button>
+    </div>
+
+    <!-- Fireworks Page -->
+    <div id="fireworks-page">
+      <div id="stars"></div>
+      <canvas id="fireworks-canvas"></canvas>
+
+      <div id="script-container">
+        <div id="script-text"></div>
+      </div>
+
+      <div id="music-info">
+        <div id="music-title">Nhạc: Ngày Xuân Long Phụng Sum Vầy (H2O Remix)</div>
+        <div id="music-toggle" title="Bật/Tắt nhạc">♪</div>
+      </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="bg-music" loop>
+      <source
+        src="nb3-hoài-bảo--nhạc-tết-remix-2023---nhạc-xuân-quý-mão.mp3"
+        type="audio/mpeg"
+      />
+    </audio>
+
+    <audio id="button-sound">
+      <source
+        src="Click Sound Effect - YouTube (mp3cut.net).mp3"
+        type="audio/mpeg"
+      />
+    </audio>
+
+    <audio id="firework-sound">
+      <source
+        src="Firework Sound Effect - YouTube (mp3cut.net).mp3"
+        type="audio/mpeg"
+      />
+    </audio>
+
+    <script src="script.js"></script>
+  </body>
+</html>
